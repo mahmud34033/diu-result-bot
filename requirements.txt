@@ -1,0 +1,6 @@
+aiogram==2.23.1
+flask
+telebot==0.0.5
+requests==2.31.0
+DateTime==5.1
+pytz==2023.3.post1
