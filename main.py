@@ -39,18 +39,23 @@ def unblock_user(user_id):
 
 @dp.message_handler(commands=['users'])
 async def count_user(message: types.Message):
-    cnt = len(user_list)
-    myuser = f'_Total users: {cnt}_'
-    await message.reply(myuser, parse_mode="Markdown")
+    if message.from_user.id == ADMIN_ID:  # Replace with your admin user ID
+        cnt = len(user_list)
+        myuser = f'_Total users: {cnt}_'
+        await message.reply(myuser, parse_mode="Markdown")
+    else:
+        await message.reply("You are not authorized to use this command.")
 
-@dp.message_handler(commands=['stat'])
+@dp.message_handler(commands=['stats'])
 async def statistics(message: types.Message):
-    stats = "*User Statistics:*\n\n"
-    for user_id, user_info in user_list.items():
-        stats += (f'ID: `{user_id}`\nName: {user_info["first_name"]} {user_info["last_name"]}\n'
-                  f'Messages sent: {message_count[user_id]}\nJoined: {user_info["join_time"]}\n\n')
-    await message.reply(stats, parse_mode="Markdown")
-        
+    if message.from_user.id == ADMIN_ID:  # Replace with your admin user ID
+        stats = "*User Statistics:*\n\n"
+        for user_id, user_info in user_list.items():
+            stats += (f'ID: `{user_id}`\nName: {user_info["first_name"]} {user_info["last_name"]}\n'
+                      f'Messages sent: {message_count[user_id]}\nJoined: {user_info["join_time"]}\n\n')
+        await message.reply(stats, parse_mode="Markdown")
+    else:
+        await message.reply("You are not authorized to use this command.")
 
 @dp.message_handler(commands=['start'])
 async def welcome(message: types.Message):
@@ -73,7 +78,7 @@ async def welcome(message: types.Message):
 
 @dp.message_handler(commands=['block'])
 async def handle_block(message: types.Message):
-    if message.from_user.id == 5482855863:  # Replace with your admin user ID
+    if message.from_user.id == ADMIN_ID:  # Replace with your admin user ID
         try:
             user_id_to_block = int(message.text.split()[1])
             block_user(user_id_to_block)
@@ -85,7 +90,7 @@ async def handle_block(message: types.Message):
 
 @dp.message_handler(commands=['unblock'])
 async def handle_unblock(message: types.Message):
-    if message.from_user.id == 5482855863:  # Replace with your admin user ID
+    if message.from_user.id == ADMIN_ID:  # Replace with your admin user ID
         try:
             user_id_to_unblock = int(message.text.split()[1])
             unblock_user(user_id_to_unblock)
@@ -97,7 +102,7 @@ async def handle_unblock(message: types.Message):
 
 @dp.message_handler(commands=['blocklist'])
 async def handle_blocked(message: types.Message):
-    if message.from_user.id == 5482855863:  # Replace with your admin user ID
+    if message.from_user.id == ADMIN_ID:  # Replace with your admin user ID
         if blocked_users:
             blocked_list = "\n".join([str(user_id) for user_id in blocked_users])
             await message.reply(f"Blocked users:\n{blocked_list}")
@@ -152,7 +157,7 @@ async def echo(message: types.Message):
             await update_processing_message(processing_message, i)
 
         # Fetching the result after the progress bar simulation
-        url_result = ree.get(f'SERVER_API')
+        url_result = ree.get(f'API_KEY')
         res = url_result.text
 
         res = res.replace("[", "").replace("]", "").replace("},", "}},").replace("null", "\"null\"").split("},")
@@ -162,7 +167,7 @@ async def echo(message: types.Message):
             await asyncio.sleep(0.5)
             await update_processing_message(processing_message, i)
         
-        url_info = ree.get(f'SERVER_API')
+        url_info = ree.get(f'API_KEY')
         info = url_info.text
         info = json.loads(info)
 
