@@ -65,11 +65,11 @@ async def welcome(message: types.Message):
         if add_user(idu, message.from_user.first_name, message.from_user.last_name):
             nw = (f'*🚀 New Joined !!! [{current_time}]\nID: *`{idu}`\n'
                   f'*First name: {message.from_user.first_name}\nLast name: {message.from_user.last_name}*')
-            await bot.send_message(5482855863, text=nw, parse_mode="Markdown")
+            await bot.send_message(ADMIN_ID, text=nw, parse_mode="Markdown")
     
     txt = (f'_==> id:_ \"`{message.from_user.id}`\"_, text: \"{message.text}\", '
            f'[date-time: {current_time}]_')
-    await bot.send_message(5482855863, text=txt, parse_mode="Markdown")
+    await bot.send_message(ADMIN_ID, text=txt, parse_mode="Markdown")
     
     msg_start = (f"Hi, {message.from_user.first_name}\n\n"
                  f"Welcome to \"Fall'23 Result bot - DIU.\" 💐\n\n"
@@ -144,7 +144,7 @@ async def echo(message: types.Message):
         record_message(user_id)
         current_time = get_current_time()
         txt = f'_==> id:_ \"`{user_id}`\"_, text: \"{message.text}\", [date-time: {current_time}]_'
-        await bot.send_message(5482855863, text=txt, parse_mode="Markdown")
+        await bot.send_message(ADMIN_ID, text=txt, parse_mode="Markdown")
         
         stu_id = message.text
 
